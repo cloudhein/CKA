@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echo
+  namespace: echo-sound
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "example.org"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/echo"
+        backend:
+          service:
+            name: echoserver-service  
+            port:
+              number: 8080 # Make sure this matches the Service port

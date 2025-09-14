@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: echo-sound
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver
+  namespace: echo-sound
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoserver
+  template:
+    metadata:
+      labels:
+        app: echoserver
+    spec:
+      containers:
+      - name: echoserver
+        image: k8s.gcr.io/echoserver:1.10
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echoserver-service
+  namespace: echo-sound
+spec:
+  selector:
+    app: echoserver
+  ports:
+  - port: 8080
+    targetPort: 8080
+
