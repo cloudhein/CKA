@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-kusc00101
+spec:
+  containers:
+  - image: nginx
+    name: pod
+  nodeSelector:
+    gpu: nvidia

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+  - name: nginx-pod
+    image: nginx:latest
+    volumeMounts:
+    - mountPath: /tmp/pod-data
+      name: mydir
+  volumes:
+  - name: mydir
+    hostPath:
+      # Ensure the file directory is created.
+      path: /tmp/node-data # represents the directory on the host node and should be used only for single-node testing
+      type: DirectoryOrCreate

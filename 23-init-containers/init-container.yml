@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hungry-bear
+  labels:
+    app: hungry-bear
+spec:
+  volumes:
+  - name: shared-workdir
+    emptyDir: {} # This volume will be used by the init container and the main container
+  initContainers:
+  - name: calm-init
+    image: busybox
+    command: ['/bin/sh', '-c', 'touch /workdir/calm.txt']
+    volumeMounts:
+    - name: shared-workdir
+      mountPath: /workdir # Mount the shared volume to the init container
+  containers:
+  - name: hungry-bear-container
+    image: busybox
+    command: ['/bin/sh', '-c', 'test -f /workdir/calm.txt && echo "File exists" || exit 1 ; sleep 3600']
+    volumeMounts:
+    - name: shared-workdir
+      mountPath: /workdir # Mount the shared volume to the main container
+

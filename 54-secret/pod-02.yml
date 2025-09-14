@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: pod
+  name: pod-secrets-via-env
+spec:
+  containers:
+  - image: redis
+    name: pod
+    env: 
+      - name: CONFIDENTIAL
+        valueFrom:
+          secretKeyRef:
+            key: password
+            name: super-secret
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels: 
+    app: ds-kusc00201
+  name: ds-kusc00201
+spec:
+  updateStrategy:
+    type: "RollingUpdate"
+  selector:
+    matchLabels:
+      app: ds-kusc00201 # This label must match the pod template's labels & immutable after creation
+  template:
+    metadata:
+      labels:
+        app: ds-kusc00201
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane" # matches the taint key on control-plane nodes
+          effect: "NoSchedule"
+          operator: "Exists"

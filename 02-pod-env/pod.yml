@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+  - env:
+    - name: var1
+      value: value1
+    image: nginx
+    name: nginx-pod
+

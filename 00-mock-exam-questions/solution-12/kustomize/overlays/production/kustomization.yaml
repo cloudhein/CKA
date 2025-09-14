@@ -1,0 +1,12 @@
+resources:
+  - ../../base
+
+namePrefix: prod-
+
+labels:
+  - pairs:
+      environment: production
+
+images:
+- name: nginx
+  newTag: "1.21"

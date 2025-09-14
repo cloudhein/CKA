@@ -1,0 +1,2 @@
+# Check the how many worker nodes only (not including nodes tainted NoSchedule)
+kubectl get nodes | grep -v control-plane | awk '$2=="Ready" {print $1}' | while read node; do kubectl get nodes "$node" -o json | grep -q NoSchedule || echo "$node" ; done | wc -l > /tmp/KUNW00601/test.txt

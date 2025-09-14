@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: pod
+  name: pod-secrets-via-file
+spec:
+  volumes:
+  - name: pod-secrets-volume
+    secret:
+      secretName: super-secret
+  containers:
+  - image: redis
+    name: pod
+    volumeMounts:
+    - name: pod-secrets-volume # must match the name of volume
+      mountPath: /secrets
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

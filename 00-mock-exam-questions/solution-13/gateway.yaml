@@ -1,0 +1,15 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: example-gateway
+  namespace: default
+spec:
+  gatewayClassName: example-gw-class
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 8000
+    hostname: web.example.com
+    allowedRoutes:
+      namespaces:
+        from: Same

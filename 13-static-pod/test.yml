@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: pod
+  name: webtool
+spec:
+  containers:
+  - image: httpd
+    name: pod
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
