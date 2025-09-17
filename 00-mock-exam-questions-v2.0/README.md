@@ -1,282 +1,314 @@
-## Question 1
+# CKA 2025 Exam Questions - Complete Study Guide
 
-An NGINX Deploy named `nginx-static` is Running in the `nginx-static` NS. It is configured using a CfgMap named nginx-config. Update the nginx-config CfgMap to allow only TLSv1.3 connections.re-create, restart, or scale resources as necessary. By using command to test the changes:
+> **Certified Kubernetes Administrator (CKA) Practice Questions**  
+> Comprehensive collection of realistic exam scenarios covering all CKA domains
 
-[candidate@cka2025] $ curl --tls-max 1.2 [https://web.k8s.local](https://web.k8s.local/)
+## Overview
 
-As TLSV1.2 should not be allowed anymore, the command should fail
+This collection contains 17 comprehensive CKA practice questions that mirror the actual exam format and difficulty. Each question is designed to test multiple skills and real-world Kubernetes administration scenarios.
 
-## Question 2
+### Exam Domains Coverage
+- **Installation & Configuration**: 25% (Questions 1, 7, 12, 15)
+- **Workloads & Scheduling**: 15% (Questions 3, 8, 11, 13)  
+- **Services & Networking**: 20% (Questions 2, 4, 5, 6, 9, 17)
+- **Storage**: 10% (Question 10, 14)
+- **Troubleshooting**: 30% (Questions 14, 16)
 
-Migrate an existing web application from Ingress to Gateway API.
+---
 
-We must maintain HTTPSuccess.
+## Questions by Domain
 
-A GatewayClass named `nginx` is installed in the cluster.
+### Installation & Configuration (25%)
 
-First, create a Gateway named `web-gateway` with hostname gateway.web.k8s.local that maintains the existing TLS and listener configuration from the existing ingress resource named web.
+#### **Question 1: NGINX TLS Configuration**
+An NGINX Deploy named `nginx-static` is running in the `nginx-static` namespace. It is configured using a ConfigMap named `nginx-config`. 
 
-Next, create an HTTPRoute named `web-route` with hostname gateway.web.k8s.local that maintains the existing routing rules from the current Ingress resource named web.
+**Task**: Update the `nginx-config` ConfigMap to allow only TLSv1.3 connections. Re-create, restart, or scale resources as necessary.
 
-You can test your Gateway API configuration with the following command:
+**Verification**: Test the changes using the following command (should fail as TLSv1.2 is no longer allowed):
+```bash
+curl --tls-max 1.2 https://web.k8s.local/
+```
 
-[candidate@cka2025] $ curl https:[//gateway.web.k8s.local](https://gateway.web.k8s.local/)
+---
 
-Finally, delete the existing Ingress resource named web.
+#### **Question 7: Argo CD Helm Installation**
+Install Argo CD in the cluster using Helm.
 
-## Question 3
+**Tasks**:
+1. Add the official Argo CD Helm repository with the name `argo`:
+   ```
+   https://argoproj.github.io/argo-helm
+   ```
+2. The Argo CD CRDs have already been pre-installed in the cluster
+3. Generate a Helm template of the Argo CD Helm chart version `7.7.3` for the `argocd` namespace and save to `/argo-helm.yaml`
+4. Configure the chart to not install CRDs
+5. Install Argo CD using Helm with release name `argocd` using version `7.7.3`
+6. Install it in the `argocd` namespace and configure it to not install CRDs
 
-Create a new HorizontalPodAutoscaler (HPA) named `apache-server`in the `autoscale`
+**Note**: You do not need to configure access to the Argo CD server UI.
 
-namespace. This HPA mustītarget the existing Deployment called `apache-server` in the `autoscale` namespace.
+---
 
-Set the HPA to target for 50% CPU usage per Pod.
-
-Configure hpa to have at min 1 Pod and no more than 4 Pods[max]. Also, we have to set the downscale stabilization window to 30 seconds.
-
-## Question 4
-
-Create a new Ingress resource `echo` in `echo-sound` namespace
-
-Exposing Service `echoserver-service` on http://example.org/echo using Service port 8080
-
-The availability of Service `echoserver-service` can be checked
-
-using the following command, which should return 200:
-
-[candidate@cka2025] $ curl -o /dev/null -s -w "%{http_code}\n“ http://example.org/echo
-
-## Question 5
-
-Install and configure a Container Network Interface (CNI) of your choice that meets the specified requirements. Choose one of the following CNI options:
-
-Flannel (v0.26.1)
-
-using the manifest:
-
-[kube-flannel.yml]
-
-(https://github.com/flannel-io/flannel/releases/download/v0.26.1/kube-flannel.yml)
-
-Calico (v3.28.2)
-
-using the manifest:
-
-[tigera-operator.yaml]
-
-(https://raw.githubusercontent.com/projectcalico/calico/v3.28.2/manifests/tigera-operator.yaml)
-
-Ensure the selected CNI is properly installed and configured in the Kubernetes cluster.
-
-## Question 6
-
-Install and configure a Container Network Interface (CNI) of your choice that meets the specified requirements. Choose one of the following CNI options:
-
-Flannel using the manifest →
-
-https://github.com/flannel-io/flannel/releases/download/v0.26.1/kube-flannel.yml
-
-Calico using the manifest →
-
-https://raw.githubusercontent.com/projectcalico/calico/v3.29.2/manifests/tigera-operator.yaml
-
-Ensure the selected CNI is properly installed and configured in the Kubernetes cluster.
-
-The CNI you choose must:
-
-Let Pods communicate with each other
-
-Support Network Policy enforcement
-
-Install from manifest files (do not use Helm)
-
-## Question 7
-
-Install Argo CD in cluster:
-
-Add the official Argo CD Helm repository with the name argo.
-
-https://argoproj.github.io/argo-helm
-
-The Argo CD CRDs have already been pre-installed in the cluster.
-
-Generate a helm template of the Argo CD Helm chart
-
-version 7.7.3 for the `argocd` NS and save to /argo-helm.yaml
-
-Configure the chart to not install CRDs.
-
-Install Argo CD using Helm with release name `argocd`
-
-using the same version as above and configuration as used in the template 7.7.3.
-
-Install it in the `argocd` ns and configure it to not install CRDs.
-
-You do not need to configure access to the Argo CD server UI.
-
-## Question 08
-
-Create a new PriorityClass named `high-priority` for user-workloads with a value that is one less than the highest existing user-defined priority class value. 
-
-Patch the existing Deployment `busybox-logger` running in the `priority` namespace to use the high-priority priority class.
-
-Ensure that the `busybox-logger` Deployment rolls out successfully with the new priority class set.
-
-It is expected that Pods from other Deployments running in the priority namespace are evicted.
-
-Do not modify other Deployments running in the priority namespace.
-
-Failure to do so may result in a reduced score.
-
-## Question 09
-
-Reconfigure the existing Deployment `front-end` in namespace `sp-culator` to expose port 80/tcp of the existing container nginx.
-
-Create a new Service named `front-end-svc` exposing the container port 80/tcp.
-
-Configure the new Service to also expose the individual pods via & NodePort
-
-## Question 10
-
-Create a new StorageClass named `low-latency` that uses the existing provisioner [rancher.io/local-path](http://rancher.io/local-path).
-
-Set the VolumeBindingMode to `WaitForFirstConsumer`. (Mandatory or the score will be reduced)
-
-Make the newly created StorageClass (low-latency) the default StorageClass in the cluster.
-
-Do NOT modify any existing Deployments or PersistentVolumeClaims. (If modified, the score will be reduced)
-
-## Question 11
-
-A legacy app needs to be integrated into the Kubernetes built-in logging architecture (i.e. kubectl logs). Adding a streaming co-located container is a good and common way to accomplish this requirement.
-
-**Task**
-
-Update the existing Deployment synergy-deployment, adding a co-located container named sidecar using the busybox:stable image to the existing Pod.
-
-The new co-located container has to run the following command:
-
-`/bin/sh -c "tail -n+1 -f /var/log/synergy-deployment.log"`
-
-Use a Volume mounted at /var/log to make the log file synergy-deployment.log available to the co located container.
-
-Do not modify the specification of the existing container other than adding the required.
-
-Hint: Use a shared volume to expose the log file between the main application container and the sidecar
-
-## Question 12 
-
+#### **Question 12: Cert-Manager CRD Verification**
 Verify the cert-manager application which has been deployed in the cluster.
 
-Create a list of all cert-manager Custom Resource Definitions (CRDs) and save it to ~/resources.yaml.
+**Tasks**:
+1. Create a list of all cert-manager Custom Resource Definitions (CRDs) and save it to `~/resources.yaml`
+2. Use kubectl's default output format to list CRDs (do not set an output format)
+3. Using kubectl, extract the documentation for the subject specification field of the Certificate Custom Resource and save it to `~/subject.yaml`
 
-make sure kubectl's default output format and use kubectl to list CRD's
+**Important**: You may use any output format that kubectl supports for the documentation extraction.
 
-Do not set an output format.
+---
 
-Failure to do so will result in a reduced score.
-
-Using kubectl, extract the documentation for the subject specification field of the Certificate Custom Resource and save it to ~/subject.yaml.
-
-You may use any output format that kubectl supports.
-
-## Question 13
-
-A WordPress application with 3 replicas in the `relative-fawn` namespace consists of:
-
-cpu 1 memory 2015360ki
-
-Adjust all Pod resource requests as follows:
-
-Divide node resources evenly across all 3 pods.
-
-Give each Pod a fair share of CPU and memory.
-
-Add enough overhead to keep the node stable.
-
-Use the exact same requests for both containers and init containers.
-
-You are not required to change any resource limits.
-
-It may help to temporarily scale the WordPress Deployment to 0 replicas while updating the resource requests.
-
-After updates, confirm:
-
-- WordPress keeps 3 replicas.
-- All Pods are running and ready.
-
-## Question 14
-
-A user accidentally deleted the MariaDB Deployment in the mariadb namespace,which was configured with persistent storage.
-
-Your responsibility is to re-establish the Deployment while ensuring data is preserved by reusing the available PersistentVolume.
-
-Task:
-
-A PersistentVolume already exists and is retained for reuse. only one pv exist.
-
-Create a PersistentVolumeClaim (PVC) named `mariadb` in the `mariadb` NS with the spec:
-
-Access mode `ReadWriteOnce` and Storage `250Mi`
-
-Edit the MariaDB Deploy file located at ~/mariadb-deploy.yaml to use PVC created in the previous step.
-
-Apply the updated Deployment file to the cluster.
-
-Ensure the MariaDB Deployment is running and Stable
-
-## Question 15
-
+#### **Question 15: Linux System Preparation for Kubernetes**
 Prepare a Linux system for Kubernetes. Docker is already installed, but you need to configure it for kubeadm.
 
-Task
+**Tasks**:
 
-Complete these tasks to prepare the system for Kubernetes :
+**Set up cri-dockerd**:
+- Install the Debian package: `~/cri-dockerd_0.3.9.3-0.ubuntu-jammy_amd64.deb`
+- Debian packages are installed using `dpkg`
+- Enable and start the cri-docker service
 
-Set up cri-dockerd:
+**Configure system parameters**:
+- Set `net.bridge.bridge-nf-call-iptables` to `1`
+- Set `net.ipv6.conf.all.forwarding` to `1`
+- Set `net.ipv4.ip_forward` to `1`
+- Set `net.netfilter.nf_conntrack_max` to `131072`
 
-Install the Debian package ~/cri-dockerd_0.3.9.3-0.ubuntu-jammy_amd64.deb
+---
 
-Debian packages are installed using dpkg.
+### Workloads & Scheduling (15%)
 
-Enable and start the cri-docker service
+#### **Question 3: Horizontal Pod Autoscaler Configuration**
+Create a new HorizontalPodAutoscaler (HPA) named `apache-server` in the `autoscale` namespace.
 
-Configure these system parameters:
+**Requirements**:
+- Target the existing Deployment called `apache-server` in the `autoscale` namespace
+- Set the HPA to target 50% CPU usage per Pod
+- Configure minimum 1 Pod and maximum 4 Pods
+- Set the downscale stabilization window to 30 seconds
 
-Set net.bridge.bridge-nf-call-iptables to 1
+---
 
-Set net.ipv6.conf.all.forwarding to 1
+#### **Question 8: PriorityClass and Deployment Patching**
+Create a new PriorityClass named `high-priority` for user-workloads with a value that is one less than the highest existing user-defined priority class value.
 
-Set net.ipv4.ip_forward to 1
+**Tasks**:
+1. Patch the existing Deployment `busybox-logger` running in the `priority` namespace to use the high-priority priority class
+2. Ensure that the `busybox-logger` Deployment rolls out successfully with the new priority class set
+3. It is expected that Pods from other Deployments running in the priority namespace are evicted
+4. Do not modify other Deployments running in the priority namespace
 
-Set net.netfilter.nf_conntrack max to 131072
+**Warning**: Failure to follow these requirements may result in a reduced score.
 
-## Question 16
+---
 
-We need fix a single-node cluster that got broken during machine migration.
+#### **Question 11: Sidecar Container Integration**
+A legacy app needs to be integrated into the Kubernetes built-in logging architecture (i.e., `kubectl logs`). Adding a streaming co-located container is a good and common way to accomplish this requirement.
 
-Identify the broken cluster components and investigate what caused to break those components.
+**Task**: Update the existing Deployment `synergy-deployment`, adding a co-located container named `sidecar` using the `busybox:stable` image to the existing Pod.
 
-The decommissioned cluster used an external etcd server.
+**Requirements**:
+- The new co-located container must run the following command:
+  ```bash
+  /bin/sh -c "tail -n+1 -f /var/log/synergy-deployment.log"
+  ```
+- Use a Volume mounted at `/var/log` to make the log file `synergy-deployment.log` available to the co-located container
+- Do not modify the specification of the existing container other than adding the required volume mount
 
-Next, fix the configuration of all broken cluster components.
+**Hint**: Use a shared volume to expose the log file between the main application container and the sidecar.
 
-Ensure to restart all necessary services and components for changes to take effect.
+---
 
-Finally, ensure the cluster, single node and all pods are Ready.
+#### **Question 13: WordPress Resource Allocation**
+A WordPress application with 3 replicas in the `relative-fawn` namespace consists of:
+- **CPU**: 1 core
+- **Memory**: 2015360ki
 
-## Question 17
+**Tasks**:
+- Divide node resources evenly across all 3 pods
+- Give each Pod a fair share of CPU and memory
+- Add enough overhead to keep the node stable
+- Use the exact same requests for both containers and init containers
+- You are not required to change any resource limits
 
-We have frontend and backend Deploy in separate NS (frontend and backend). They need to communicate.
+**Helpful Tip**: It may help to temporarily scale the WordPress Deployment to 0 replicas while updating the resource requests.
 
-Analyze: Inspect the frontend and backend Deployments to understand their communication requirements.
+**Verification**:
+- WordPress keeps 3 replicas
+- All Pods are running and ready
 
-Apply: From the NetworkPolicy YAML files in the ~/netpol folder, choose one to apply. It must:
+---
 
-Allow communication between frontend and backend.
+### Services & Networking (20%)
 
-Be as restrictive as possible (least permissive)
+#### **Question 2: Ingress to Gateway API Migration**
+Migrate an existing web application from Ingress to Gateway API while maintaining HTTP functionality.
 
-Do not delete or change the existing "deny-all" netpol's.
+**Given**: A GatewayClass named `nginx` is installed in the cluster.
 
-Failure to follow these rules may result in a score reduction or zero.
+**Tasks**:
+1. Create a Gateway named `web-gateway` with hostname `gateway.web.k8s.local` that maintains the existing TLS and listener configuration from the existing ingress resource named `web`
+2. Create an HTTPRoute named `web-route` with hostname `gateway.web.k8s.local` that maintains the existing routing rules from the current Ingress resource named `web`
+3. Delete the existing Ingress resource named `web`
+
+**Verification**: Test your Gateway API configuration with:
+```bash
+curl https://gateway.web.k8s.local/
+```
+
+---
+
+#### **Question 4: Ingress Resource Creation**
+Create a new Ingress resource `echo` in the `echo-sound` namespace.
+
+**Requirements**:
+- Expose Service `echoserver-service` on `http://example.org/echo`
+- Use Service port `8080`
+
+**Verification**: The availability of Service `echoserver-service` can be checked using the following command (should return 200):
+```bash
+curl -o /dev/null -s -w "%{http_code}\n" http://example.org/echo
+```
+
+---
+
+#### **Question 5: Container Network Interface (CNI) Installation**
+Install and configure a Container Network Interface (CNI) of your choice that meets the specified requirements.
+
+**Choose one of the following CNI options**:
+
+**Flannel (v0.26.1)** using the manifest:
+```
+https://github.com/flannel-io/flannel/releases/download/v0.26.1/kube-flannel.yml
+```
+
+**Calico (v3.28.2)** using the manifest:
+```
+https://raw.githubusercontent.com/projectcalico/calico/v3.28.2/manifests/tigera-operator.yaml
+```
+
+**Requirement**: Ensure the selected CNI is properly installed and configured in the Kubernetes cluster.
+
+---
+
+#### **Question 6: CNI Installation with Network Policy Support**
+Install and configure a Container Network Interface (CNI) of your choice that meets the specified requirements.
+
+**Choose one of the following CNI options**:
+
+**Flannel** using the manifest:
+```
+https://github.com/flannel-io/flannel/releases/download/v0.26.1/kube-flannel.yml
+```
+
+**Calico** using the manifest:
+```
+https://raw.githubusercontent.com/projectcalico/calico/v3.29.2/manifests/tigera-operator.yaml
+```
+
+**The CNI you choose must**:
+- Let Pods communicate with each other
+- Support Network Policy enforcement
+- Install from manifest files (do not use Helm)
+
+---
+
+#### **Question 9: Service Exposure and NodePort Configuration**
+Reconfigure the existing Deployment `front-end` in namespace `sp-culator` to expose port 80/tcp of the existing container nginx.
+
+**Tasks**:
+1. Create a new Service named `front-end-svc` exposing the container port 80/tcp
+2. Configure the new Service to also expose the individual pods via NodePort
+
+---
+
+#### **Question 17: Network Policy Implementation**
+You have frontend and backend Deployments in separate namespaces (`frontend` and `backend`). They need to communicate.
+
+**Tasks**:
+1. **Analyze**: Inspect the frontend and backend Deployments to understand their communication requirements
+2. **Apply**: From the NetworkPolicy YAML files in the `~/netpol` folder, choose one to apply. It must:
+   - Allow communication between frontend and backend
+   - Be as restrictive as possible (least permissive)
+
+**Important**: Do not delete or change the existing "deny-all" network policies. Failure to follow these rules may result in a score reduction or zero.
+
+---
+
+### Storage (10%)
+
+#### **Question 10: StorageClass Configuration**
+Create a new StorageClass named `low-latency` that uses the existing provisioner `rancher.io/local-path`.
+
+**Requirements**:
+- Set the VolumeBindingMode to `WaitForFirstConsumer` (Mandatory - score will be reduced if not set)
+- Make the newly created StorageClass (`low-latency`) the default StorageClass in the cluster
+- Do NOT modify any existing Deployments or PersistentVolumeClaims (score will be reduced if modified)
+
+---
+
+### Troubleshooting (30%)
+
+#### **Question 14: MariaDB Data Recovery**
+A user accidentally deleted the MariaDB Deployment in the `mariadb` namespace, which was configured with persistent storage.
+
+**Responsibility**: Re-establish the Deployment while ensuring data is preserved by reusing the available PersistentVolume.
+
+**Given**: A PersistentVolume already exists and is retained for reuse (only one PV exists).
+
+**Tasks**:
+1. Create a PersistentVolumeClaim (PVC) named `mariadb` in the `mariadb` namespace with the spec:
+   - Access mode: `ReadWriteOnce`
+   - Storage: `250Mi`
+2. Edit the MariaDB Deploy file located at `~/mariadb-deploy.yaml` to use the PVC created in the previous step
+3. Apply the updated Deployment file to the cluster
+4. Ensure the MariaDB Deployment is running and stable
+
+---
+
+#### **Question 16: Cluster Component Recovery**
+Fix a single-node cluster that got broken during machine migration.
+
+**Background**: The decommissioned cluster used an external etcd server.
+
+**Tasks**:
+1. Identify the broken cluster components and investigate what caused them to break
+2. Fix the configuration of all broken cluster components
+3. Restart all necessary services and components for changes to take effect
+4. Ensure the cluster, single node, and all pods are Ready
+
+---
+
+## Study Tips
+
+### Time Management
+- **Easy questions**: 5-8 minutes each
+- **Medium questions**: 8-12 minutes each  
+- **Complex questions**: 12-20 minutes each
+- **Total exam time**: 2 hours
+
+### Key Success Factors
+1. **Read requirements carefully** - many questions have specific constraints
+2. **Verify your work** - most questions include verification commands
+3. **Use imperative commands** when possible for speed
+4. **Practice realistic scenarios** - these questions mirror real exam complexity
+5. **Master kubectl** - essential for efficient execution
+
+### Domain Focus Areas
+- **Troubleshooting** (30%): Practice systematic debugging approaches
+- **Installation & Configuration** (25%): Know cluster setup and tool integration
+- **Services & Networking** (20%): Master service types, ingress, and network policies
+- **Workloads & Scheduling** (15%): Understand deployments, scaling, and resource management
+- **Storage** (10%): Know PV/PVC lifecycle and storage classes
+
+---
+
+## Verification Commands Reference
+
+Most questions include specific verification commands. Always run these to confirm your solution works correctly before moving to the next question.
+
+**Remember**: The CKA exam is performance-based. These questions test your ability to solve real-world Kubernetes administration challenges under time pressure.
