@@ -1,0 +1,25 @@
+# Create some existing user-defined priority classes with different values
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: medium-priority
+value: 500
+preemptionPolicy: PreemptLowerPriority
+description: "Medium priority for regular workloads"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: low-priority
+value: 100
+preemptionPolicy: PreemptLowerPriority
+description: "Low priority for background tasks"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: very-high-priority
+value: 800
+preemptionPolicy: PreemptLowerPriority
+description: "Very high priority for important workloads"

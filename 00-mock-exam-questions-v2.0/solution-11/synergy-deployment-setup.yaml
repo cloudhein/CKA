@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: synergy-env
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synergy-deployment
+  namespace: synergy-env
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: synergy
+  template:
+    metadata:
+      labels:
+        app: synergy
+    spec:
+      volumes:
+        - name: data
+          emptyDir: {}
+      containers:
+      - name: synergy-app
+        image: busybox:stable
+        command: ["/bin/sh", "-c"]
+        args:
+          - >
+            while true; do
+              echo "$(date) - Synergy App is running" >> /var/log/synergy-deployment.log;
+              sleep 5;
+            done
+        volumeMounts:
+          - name: data
+            mountPath: /var/log
+      # Sidecar container to tail the log file
+      - name: sidecar
+        image: busybox:stable
+        restartPolicy: Always
+        command: ["/bin/sh", "-c"]
+        args:
+          - "tail -n+1 -f /var/log/synergy-deployment.log"
+        volumeMounts:
+          - name: data
+            mountPath: /var/log
+
+

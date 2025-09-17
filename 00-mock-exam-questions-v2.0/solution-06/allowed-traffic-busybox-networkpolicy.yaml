@@ -1,0 +1,14 @@
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: allow-busybox-egress
+  namespace: quickstart
+spec:
+  selector: run == "access" # selcted pods 
+  types:
+  - Egress
+  egress: # Allow public internet access for busybox pods
+  - action: Allow
+    destination:
+      nets:
+      - "0.0.0.0/0"

@@ -1,0 +1,13 @@
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: allow-nginx-ingress
+  namespace: quickstart
+spec:
+  selector: app == 'nginx' # selected pods
+  types:
+  - Ingress
+  ingress:
+  - action: Allow
+    source:
+      selector: run == 'access'

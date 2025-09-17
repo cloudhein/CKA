@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: relative-fawn
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: relative-fawn
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      initContainers:
+        - name: init-db
+          image: busybox
+          command: ["sh", "-c", "echo init; sleep 3600"]
+      containers:
+        - name: wordpress
+          image: wordpress:php8.0-apache
+          ports:
+            - containerPort: 80
+

@@ -1,0 +1,15 @@
+GROUP:      cert-manager.io
+KIND:       Certificate
+VERSION:    v1
+
+FIELD: subject <Object>
+
+
+DESCRIPTION:
+    Subject fields for the certificate
+    
+FIELDS:
+  organizations	<[]string>
+    <no description>
+
+
