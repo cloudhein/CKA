@@ -1,0 +1,21 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: web-gateway
+  namespace: default
+spec:
+  gatewayClassName: nginx
+  listeners:
+  - name: https
+    protocol: HTTPS
+    port: 8443 # an entry point for traefik(websecure endpoint)
+    allowedRoutes:
+      namespaces:
+        from: All
+    hostname: gateway.web.k8s.local
+    tls:
+      mode: Terminate
+      certificateRefs:
+        - kind: Secret
+          name: gw-api-tls-secret
+          namespace: default

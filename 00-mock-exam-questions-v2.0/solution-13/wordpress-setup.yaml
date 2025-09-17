@@ -21,10 +21,9 @@ spec:
       initContainers:
         - name: init-db
           image: busybox
-          command: ["sh", "-c", "echo init; sleep 3600"]
+          command: ["sh", "-c", "echo init; sleep 60"]
       containers:
         - name: wordpress
           image: wordpress:php8.0-apache
           ports:
             - containerPort: 80
-

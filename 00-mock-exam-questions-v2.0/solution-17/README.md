@@ -51,3 +51,14 @@ backend     allow-frontend-to-backend   app=backend    19s
 backend     deny-all                    <none>         22m
 frontend    deny-all                    <none>         22m
 ```
+
+EXPECTED OUTPUT for testing:
+```bash
+kubectl exec -it pod/frontend-684ff45d4f-4kwqf -n frontend -- sh
+
+# curl http://backend-svc.backend.svc.cluster.local
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+```
