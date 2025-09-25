@@ -60,7 +60,7 @@ kubectl edit deployment wordpress -n relative-fawn
 ## Add this resource requests in both init containers and application containers
           resources:
             requests: 
-              memory: "570000Ki"
+              memory: "570000Ki" or "558Mi" 
               cpu: "250m"
 ```
 

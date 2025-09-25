@@ -56,6 +56,7 @@ spec:
 #### Deploy maridb application 
 ```bash
 kubectl apply -f mariadb-deployment.yaml 
+namespace/mariadb created
 deployment.apps/mariadb created
 ```
 
@@ -84,7 +85,7 @@ mariadb-pv   250Mi      RWO            Retain           Bound    mariadb/mariadb
 ### Reconfigure the mariadb deployment and use PVC created in the previous step
 
 ```bash
-kubectl apply -f mariadb-deployment.yaml 
+kubectl apply -f mariadb-pvc-deployment.yaml
 deployment.apps/mariadb configured
 ```
 
@@ -106,7 +107,7 @@ replicaset.apps/mariadb-94c7b9d79    1         1         1       26s
 ### Data is persistent even if we delete mariadb deployment 
 
 ```bash
-kubectl delete -f mariadb-deployment.yaml 
+kubectl delete -f mariadb-pvc-deployment.yaml
 deployment.apps "mariadb" deleted
 ```
 EXPECTED OUTPUT:

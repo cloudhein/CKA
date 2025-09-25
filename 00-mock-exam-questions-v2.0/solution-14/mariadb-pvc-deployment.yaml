@@ -32,4 +32,5 @@ spec:
               mountPath: /var/lib/mysql
       volumes:
         - name: mariadb-storage
-          emptyDir: {}    # ⚠️ This is where you’ll replace with PVC
+          persistentVolumeClaim:
+            claimName: mariadb

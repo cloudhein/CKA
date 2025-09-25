@@ -35,14 +35,14 @@ spec:
           - name: data
             mountPath: /var/log
       # Sidecar container to tail the log file
-      - name: sidecar
-        image: busybox:stable
-        restartPolicy: Always
-        command: ["/bin/sh", "-c"]
-        args:
-          - "tail -n+1 -f /var/log/synergy-deployment.log"
-        volumeMounts:
-          - name: data
-            mountPath: /var/log
+      # - name: sidecar
+      #   image: busybox:stable
+      #   restartPolicy: Always
+      #   command: ["/bin/sh", "-c"]
+      #   args:
+      #     - "tail -n+1 -f /var/log/synergy-deployment.log"
+      #   volumeMounts:
+      #     - name: data
+      #       mountPath: /var/log
 
 

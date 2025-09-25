@@ -62,10 +62,14 @@ spec:
 ### Add a co-located container named sidecar using the busybox:stable image to the existing Pod and deploy again
 
 ```bash
-kubectl apply -f synergy-deployment-setup.yaml 
+kubectl edit deployment.apps/synergy-deployment -n synergy-env
 
-namespace/synergy-env unchanged
-deployment.apps/synergy-deployment configured
+ - name: sidecar
+	 image: busybox:stable
+   command: ['/bin/sh', '-c', 'tail -n+1 -f /var/log/synergy-deployment.log']
+   volumeMounts:
+    - name: data
+      mountPath: /var/log
 ```
 
 EXPECTED OUTPUT:

@@ -24,12 +24,6 @@ bitnami/argo-cd                 11.0.0          3.1.1           Argo CD is a con
 bitnami/argo-workflows          13.0.6          3.7.1           Argo Workflows is meant to orchestrate Kubernet...
 ```
 
-## Create a namspace for argocd
-
-```bash
-kubectl create ns argocd
-```
-
 ## Generate a helm template of the Argo CD Helm chart without installing CRDs
 
 ```bash
@@ -39,6 +33,12 @@ helm template argocd argo/argo-cd --version 7.7.3 --namespace argocd --set crds.
 ## Install argocd in argocd namespace and configure it to not install CRDs
 
 ```bash
-kubectl apply -f argo-helm.yaml
+helm install argocd argo/argo-cd  --version 7.7.3 -n argocd --set crds.install=false --create-namespace
 ```
 
+EXPECTED OUPTUT:
+```bash
+helm list -A
+NAME    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART           APP VERSION
+argocd  argocd          1               2025-09-25 11:11:43.004914754 +0700 +07 deployed        argo-cd-7.7.3   v2.13.0    
+```
