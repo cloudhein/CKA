@@ -12,6 +12,8 @@ local-path           rancher.io/local-path   Delete          WaitForFirstConsume
 standard (default)   rancher.io/local-path   Delete          WaitForFirstConsumer   false                  10h
 ````
 
+# Solution
+
 ## Create a persistent volume claim
 
  kubectl apply -f persistent-volumeclaim.yaml 
