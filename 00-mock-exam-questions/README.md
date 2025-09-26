@@ -105,7 +105,7 @@ Create a pod named `nginx` with image `nginx:latest` and ensure it gets schedule
 #### **Question 7: Taints and Tolerations**
 - **Task 1**: Add a taint to `node-1` so that no normal pods can schedule there
 - **Task 2**: Schedule a Pod on that node by adding the appropriate toleration to the Pod spec
-- **Task 3**: Ensure the Pod actually lands on `node-2`
+- **Task 3**: Ensure the Pod actually lands on `node-1`
 
 **Skills Tested**: Taints, tolerations, node scheduling control
 

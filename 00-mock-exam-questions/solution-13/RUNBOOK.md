@@ -1,3 +1,5 @@
+# Setup Guide
+
 ## Deploy the application 
 
 ```bash
@@ -40,7 +42,8 @@ gatewayclass.gateway.networking.k8s.io/example-gw-class created
 ```bash
 kubectl get gatewayclass
 NAME               CONTROLLER                      ACCEPTED   AGE
-example-gw-class   traefik.io/gateway-controller   True       6s
+example-gw-class   traefik.io/gateway-controller   True       2s
+traefik            traefik.io/gateway-controller   True       36s
 ```
 
 ## Verify the traefik api resources are successfully installed or not 
@@ -61,7 +64,37 @@ replicaset.apps/traefik-c84d5f764   1         1         1       75m
 nandahein@Nanda-Ubuntu:~/pov-kubernetes/CKA/00-mock-exam-questions/solution-13$ 
 ```
 
-## Install gateway 
+# Solution
+
+## Gateway is already installed when installed the traefik with helm
+
+```bash
+kubectl get gateway -A
+NAMESPACE   NAME              CLASS     ADDRESS          PROGRAMMED   AGE
+traefik     traefik-gateway   traefik   172.18.255.180   True         52s
+```
+## Modify the gateway according to your usecases
+
+```bash
+kubectl edit gateway/traefik-gateway -n traefik
+
+spec:
+  gatewayClassName: example-gw-class
+  listeners:
+  - hostname: web.example.com
+    allowedRoutes:
+      namespaces:
+        from: All
+```
+
+EXPECTED OUTPTUT:
+```bash
+kubectl get gateway -A
+NAMESPACE   NAME              CLASS              ADDRESS          PROGRAMMED   AGE
+traefik     traefik-gateway   example-gw-class   172.18.255.180   True         9m44s
+```
+
+## Install gateway (Use this solution only if gateway is not installed by default)
 
 ```bash
 kubectl apply -f gateway.yaml 
@@ -93,4 +126,10 @@ example-httproute   ["web.example.com"]   17s
 
 ```bash
 curl http:///172.18.255.180 -H "Host: web.example.com"
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
 ```

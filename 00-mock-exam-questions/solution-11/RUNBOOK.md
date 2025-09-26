@@ -1,31 +1,34 @@
+# Setup Guide
+
 ## Pull the traekfik repo with helm chart
 
+```bash
 helm repo add --force-update traefik https://traefik.github.io/charts
 
 helm repo update
-
-## Install it in a dedicated namespace traefik with release name traefik
-
-```bash
-helm install traefik traefik/traefik --namespace traefik --create-namespace
 ```
 
+# Solution
+
+## List and output the values of traefik gateway api to check the value of gateway api
+
+```bash
+helm show values traefik/traefik > values.yaml
+```
+
+## Install it in a dedicated namespace traefik with release name traefik and enable gateway api
+
+```bash
+helm install traefik traefik/traefik -n traefik --create-namespace --set providers.kubernetesGateway.enabled=true
+```
+EXPECTED OUTPUT:
 ```bash
 helm list -A
 NAME    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART           APP VERSION
 traefik traefik         1               2025-09-13 15:06:13.806343578 +0700 +07 deployed        traefik-37.1.1  v3.5.2 
 ```
-## Enable Kubernetes Gateway API via Helm values
 
-### Output the traefik helm values 
-```bash
-helm show values traefik/traefik > values.yaml
-```
-### Upgrade the traefik to enable Kubernetes Gateway API
-```bash
-helm upgrade --install traefik traefik/traefik --namespace traefik --create-namespace --set providers.kubernetesGateway.enabled=true
-```
-
+EXPECTED OUTPUT:
 ```bash
 kubectl get all -n traefik
 NAME                          READY   STATUS    RESTARTS   AGE

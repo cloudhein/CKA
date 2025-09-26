@@ -11,3 +11,11 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   hostPath: # represents the directory on the host node and should be used only for single-node testing
     path: /tmp/data
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - 133-worker

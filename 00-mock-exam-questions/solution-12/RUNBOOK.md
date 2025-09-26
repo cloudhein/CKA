@@ -15,15 +15,11 @@
 
 ### ***vim overlays/production/kustomization.yaml***
 ```bash
-resources:
-  - ../../base
-
-namePrefix: prod-
-
-labels:
-  - pairs:
-      environment: production
-
+namePrefix: prod- 
+commonLabels:
+    environment: production
+bases:
+- ../../base
 images:
 - name: nginx
   newTag: "1.21"

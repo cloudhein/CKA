@@ -1,9 +1,12 @@
+# Setup Guide
+
 ## Create a namepsce 
 
 ```bash
 kubectl create ns limit-test
 namespace/limit-test created
 ```
+# Solution
 
 ## Enforce default resource limits and requests for containers
 

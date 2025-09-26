@@ -1,3 +1,17 @@
+# SetUp Guide
+
+```bash
+kubectl apply -f sc.yaml 
+storageclass.storage.k8s.io/local-path created
+```
+EXPECTED OUTPUT:
+```bash
+kubectl get sc
+NAME                 PROVISIONER             RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+local-path           rancher.io/local-path   Delete          WaitForFirstConsumer   false                  3s
+standard (default)   rancher.io/local-path   Delete          WaitForFirstConsumer   false                  10h
+````
+
 ## Create a persistent volume claim
 
  kubectl apply -f persistent-volumeclaim.yaml 
@@ -13,7 +27,7 @@ spec:
   resources:
     requests:
       storage: 100Mi
-  storageClassName: standard
+  storageClassName: local-path
 ```
 
 ## Create a pod that uses the PVC
