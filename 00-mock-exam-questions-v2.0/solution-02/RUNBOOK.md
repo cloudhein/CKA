@@ -152,3 +152,9 @@ curl --insecure --resolve gateway.web.k8s.local:443:172.18.255.181 https://gatew
 <style>
 ```
 
+### Delete ingress resources
+
+```bash
+kubectl delete ingress/web
+ingress.networking.k8s.io "web" deleted
+```
