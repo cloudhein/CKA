@@ -33,3 +33,22 @@ pod/kube-flannel-ds-g5w2g   1/1     Running   0          28s
 NAME                             DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
 daemonset.apps/kube-flannel-ds   4         4         4       4            4           <none>          28s
 ```
+
+```bash
+kubectl edit cm/kube-flannel-cfg -n kube-flannel
+
+net-conf.json: |
+    {
+      "Network": "10.253.0.0/16", # change according to your environment
+      "EnableNFTables": false,
+      "Backend": {
+        "Type": "vxlan"
+      }
+```
+
+```bash
+
+### Do rollout restart the pods after changing the configmap
+```bash
+kubectl rollout restart daemonset.apps/kube-flannel-ds -n kube-flannel
+```
