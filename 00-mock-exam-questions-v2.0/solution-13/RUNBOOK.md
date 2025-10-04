@@ -89,6 +89,24 @@ replicaset.apps/wordpress-7d8fbf4dfb   3         3         3       3m25s
 
 ## Important Notes 
 
+### One big mistake that can turn your nightmare in the exam
+
+- Do not calculate with limit resources of cpu and memory from the deployment that is given.
+- If your calculation is incorrect, one of the pods will still be stucked in pending stage no matter if you reduce the resource requests of CPU & Memory of the deployment.
+- The error you might encounter in the exam if the calculation is incorrect is --> "Insufficient memory"
+
+```bash
+# Describe the node to see its capacity
+kubectl describe node <node-name>
+```
+EXPECTED OUTPUT:
+```bash
+Allocatable:
+  cpu:                1800m
+  memory:             3900Mi
+  pods:               110
+```
+
 ### **15% Overhead Reservation Strategy**
 ```
 Reserve = Total × 0.15

@@ -1,6 +1,6 @@
 # CKA 2025 Exam Questions - Complete Study Guide
 
-> **Certified Kubernetes Administrator (CKA) Practice Questions**  
+> **Certified Kubernetes Administrator (CKA) Practice Questions** 
 > Comprehensive collection of realistic exam scenarios covering all CKA domains
 
 ## Overview
@@ -9,18 +9,16 @@ This collection contains 17 comprehensive CKA practice questions that mirror the
 
 ### Exam Domains Coverage
 - **Installation & Configuration**: 25% (Questions 1, 7, 12, 15)
-- **Workloads & Scheduling**: 15% (Questions 3, 8, 11, 13)  
+- **Workloads & Scheduling**: 15% (Questions 3, 8, 11, 13) 
 - **Services & Networking**: 20% (Questions 2, 4, 5, 6, 9, 17)
-- **Storage**: 10% (Question 10, 14)
+- **Storage**: 10% (Questions 10, 14)
 - **Troubleshooting**: 30% (Questions 14, 16)
 
 ---
 
-## Questions by Domain
+## Practice Questions
 
-### Installation & Configuration (25%)
-
-#### **Question 1: NGINX TLS Configuration**
+### **Question 1: NGINX TLS Configuration** (Installation & Configuration)
 An NGINX Deploy named `nginx-static` is running in the `nginx-static` namespace. It is configured using a ConfigMap named `nginx-config`. 
 
 **Task**: Update the `nginx-config` ConfigMap to allow only TLSv1.3 connections. Re-create, restart, or scale resources as necessary.
@@ -32,120 +30,7 @@ curl --tls-max 1.2 https://web.k8s.local/
 
 ---
 
-#### **Question 7: Argo CD Helm Installation**
-Install Argo CD in the cluster using Helm.
-
-**Tasks**:
-1. Add the official Argo CD Helm repository with the name `argo`:
-   ```
-   https://argoproj.github.io/argo-helm
-   ```
-2. The Argo CD CRDs have already been pre-installed in the cluster
-3. Generate a Helm template of the Argo CD Helm chart version `7.7.3` for the `argocd` namespace and save to `/argo-helm.yaml`
-4. Configure the chart to not install CRDs
-5. Install Argo CD using Helm with release name `argocd` using version `7.7.3`
-6. Install it in the `argocd` namespace and configure it to not install CRDs
-
-**Note**: You do not need to configure access to the Argo CD server UI.
-
----
-
-#### **Question 12: Cert-Manager CRD Verification**
-Verify the cert-manager application which has been deployed in the cluster.
-
-**Tasks**:
-1. Create a list of all cert-manager Custom Resource Definitions (CRDs) and save it to `~/resources.yaml`
-2. Use kubectl's default output format to list CRDs (do not set an output format)
-3. Using kubectl, extract the documentation for the subject specification field of the Certificate Custom Resource and save it to `~/subject.yaml`
-
-**Important**: You may use any output format that kubectl supports for the documentation extraction.
-
----
-
-#### **Question 15: Linux System Preparation for Kubernetes**
-Prepare a Linux system for Kubernetes. Docker is already installed, but you need to configure it for kubeadm.
-
-**Tasks**:
-
-**Set up cri-dockerd**:
-- Install the Debian package: `~/cri-dockerd_0.3.9.3-0.ubuntu-jammy_amd64.deb`
-- Debian packages are installed using `dpkg`
-- Enable and start the cri-docker service
-
-**Configure system parameters**:
-- Set `net.bridge.bridge-nf-call-iptables` to `1`
-- Set `net.ipv6.conf.all.forwarding` to `1`
-- Set `net.ipv4.ip_forward` to `1`
-- Set `net.netfilter.nf_conntrack_max` to `131072`
-
----
-
-### Workloads & Scheduling (15%)
-
-#### **Question 3: Horizontal Pod Autoscaler Configuration**
-Create a new HorizontalPodAutoscaler (HPA) named `apache-server` in the `autoscale` namespace.
-
-**Requirements**:
-- Target the existing Deployment called `apache-server` in the `autoscale` namespace
-- Set the HPA to target 50% CPU usage per Pod
-- Configure minimum 1 Pod and maximum 4 Pods
-- Set the downscale stabilization window to 30 seconds
-
----
-
-#### **Question 8: PriorityClass and Deployment Patching**
-Create a new PriorityClass named `high-priority` for user-workloads with a value that is one less than the highest existing user-defined priority class value.
-
-**Tasks**:
-1. Patch the existing Deployment `busybox-logger` running in the `priority` namespace to use the high-priority priority class
-2. Ensure that the `busybox-logger` Deployment rolls out successfully with the new priority class set
-3. It is expected that Pods from other Deployments running in the priority namespace are evicted
-4. Do not modify other Deployments running in the priority namespace
-
-**Warning**: Failure to follow these requirements may result in a reduced score.
-
----
-
-#### **Question 11: Sidecar Container Integration**
-A legacy app needs to be integrated into the Kubernetes built-in logging architecture (i.e., `kubectl logs`). Adding a streaming co-located container is a good and common way to accomplish this requirement.
-
-**Task**: Update the existing Deployment `synergy-deployment`, adding a co-located container named `sidecar` using the `busybox:stable` image to the existing Pod.
-
-**Requirements**:
-- The new co-located container must run the following command:
-  ```bash
-  /bin/sh -c "tail -n+1 -f /var/log/synergy-deployment.log"
-  ```
-- Use a Volume mounted at `/var/log` to make the log file `synergy-deployment.log` available to the co-located container
-- Do not modify the specification of the existing container other than adding the required volume mount
-
-**Hint**: Use a shared volume to expose the log file between the main application container and the sidecar.
-
----
-
-#### **Question 13: WordPress Resource Allocation**
-A WordPress application with 3 replicas in the `relative-fawn` namespace consists of:
-- **CPU**: 1 core
-- **Memory**: 2015360ki
-
-**Tasks**:
-- Divide node resources evenly across all 3 pods
-- Give each Pod a fair share of CPU and memory
-- Add enough overhead to keep the node stable
-- Use the exact same requests for both containers and init containers
-- You are not required to change any resource limits
-
-**Helpful Tip**: It may help to temporarily scale the WordPress Deployment to 0 replicas while updating the resource requests.
-
-**Verification**:
-- WordPress keeps 3 replicas
-- All Pods are running and ready
-
----
-
-### Services & Networking (20%)
-
-#### **Question 2: Ingress to Gateway API Migration**
+### **Question 2: Ingress to Gateway API Migration** (Services & Networking)
 Migrate an existing web application from Ingress to Gateway API while maintaining HTTP functionality.
 
 **Given**: A GatewayClass named `nginx` is installed in the cluster.
@@ -162,7 +47,18 @@ curl https://gateway.web.k8s.local/
 
 ---
 
-#### **Question 4: Ingress Resource Creation**
+### **Question 3: Horizontal Pod Autoscaler Configuration** (Workloads & Scheduling)
+Create a new HorizontalPodAutoscaler (HPA) named `apache-server` in the `autoscale` namespace.
+
+**Requirements**:
+- Target the existing Deployment called `apache-server` in the `autoscale` namespace
+- Set the HPA to target 50% CPU usage per Pod
+- Configure minimum 1 Pod and maximum 4 Pods
+- Set the downscale stabilization window to 30 seconds
+
+---
+
+### **Question 4: Ingress Resource Creation** (Services & Networking)
 Create a new Ingress resource `echo` in the `echo-sound` namespace.
 
 **Requirements**:
@@ -176,7 +72,7 @@ curl -o /dev/null -s -w "%{http_code}\n" http://example.org/echo
 
 ---
 
-#### **Question 5: Container Network Interface (CNI) Installation**
+### **Question 5: Container Network Interface (CNI) Installation** (Services & Networking)
 Install and configure a Container Network Interface (CNI) of your choice that meets the specified requirements.
 
 **Choose one of the following CNI options**:
@@ -195,7 +91,7 @@ https://raw.githubusercontent.com/projectcalico/calico/v3.28.2/manifests/tigera-
 
 ---
 
-#### **Question 6: CNI Installation with Network Policy Support**
+### **Question 6: CNI Installation with Network Policy Support** (Services & Networking)
 Install and configure a Container Network Interface (CNI) of your choice that meets the specified requirements.
 
 **Choose one of the following CNI options**:
@@ -217,7 +113,38 @@ https://raw.githubusercontent.com/projectcalico/calico/v3.29.2/manifests/tigera-
 
 ---
 
-#### **Question 9: Service Exposure and NodePort Configuration**
+### **Question 7: Argo CD Helm Installation** (Installation & Configuration)
+Install Argo CD in the cluster using Helm.
+
+**Tasks**:
+1. Add the official Argo CD Helm repository with the name `argo`:
+   ```
+   https://argoproj.github.io/argo-helm
+   ```
+2. The Argo CD CRDs have already been pre-installed in the cluster
+3. Generate a Helm template of the Argo CD Helm chart version `7.7.3` for the `argocd` namespace and save to `/argo-helm.yaml`
+4. Configure the chart to not install CRDs
+5. Install Argo CD using Helm with release name `argocd` using version `7.7.3`
+6. Install it in the `argocd` namespace and configure it to not install CRDs
+
+**Note**: You do not need to configure access to the Argo CD server UI.
+
+---
+
+### **Question 8: PriorityClass and Deployment Patching** (Workloads & Scheduling)
+Create a new PriorityClass named `high-priority` for user-workloads with a value that is one less than the highest existing user-defined priority class value.
+
+**Tasks**:
+1. Patch the existing Deployment `busybox-logger` running in the `priority` namespace to use the high-priority priority class
+2. Ensure that the `busybox-logger` Deployment rolls out successfully with the new priority class set
+3. It is expected that Pods from other Deployments running in the priority namespace are evicted
+4. Do not modify other Deployments running in the priority namespace
+
+**Warning**: Failure to follow these requirements may result in a reduced score.
+
+---
+
+### **Question 9: Service Exposure and NodePort Configuration** (Services & Networking)
 Reconfigure the existing Deployment `front-end` in namespace `sp-culator` to expose port 80/tcp of the existing container nginx.
 
 **Tasks**:
@@ -226,22 +153,7 @@ Reconfigure the existing Deployment `front-end` in namespace `sp-culator` to exp
 
 ---
 
-#### **Question 17: Network Policy Implementation**
-You have frontend and backend Deployments in separate namespaces (`frontend` and `backend`). They need to communicate.
-
-**Tasks**:
-1. **Analyze**: Inspect the frontend and backend Deployments to understand their communication requirements
-2. **Apply**: From the NetworkPolicy YAML files in the `~/netpol` folder, choose one to apply. It must:
-   - Allow communication between frontend and backend
-   - Be as restrictive as possible (least permissive)
-
-**Important**: Do not delete or change the existing "deny-all" network policies. Failure to follow these rules may result in a score reduction or zero.
-
----
-
-### Storage (10%)
-
-#### **Question 10: StorageClass Configuration**
+### **Question 10: StorageClass Configuration** (Storage)
 Create a new StorageClass named `low-latency` that uses the existing provisioner `rancher.io/local-path`.
 
 **Requirements**:
@@ -251,9 +163,78 @@ Create a new StorageClass named `low-latency` that uses the existing provisioner
 
 ---
 
-### Troubleshooting (30%)
+### **Question 11: Sidecar Container Integration** (Workloads & Scheduling)
+A legacy app needs to be integrated into the Kubernetes built-in logging architecture (i.e., `kubectl logs`). Adding a streaming co-located container is a good and common way to accomplish this requirement.
 
-#### **Question 14: MariaDB Data Recovery**
+**Task**: Update the existing Deployment `synergy-deployment`, adding a co-located container named `sidecar` using the `busybox:stable` image to the existing Pod.
+
+**Requirements**:
+- The new co-located container must run the following command:
+  ```bash
+  /bin/sh -c "tail -n+1 -f /var/log/synergy-deployment.log"
+  ```
+- Use a Volume mounted at `/var/log` to make the log file `synergy-deployment.log` available to the co-located container
+- Do not modify the specification of the existing container other than adding the required volume mount
+
+**Hint**: Use a shared volume to expose the log file between the main application container and the sidecar.
+
+---
+
+### **Question 12: Cert-Manager CRD Verification** (Installation & Configuration)
+Verify the cert-manager application which has been deployed in the cluster.
+
+**Tasks**:
+1. Create a list of all cert-manager Custom Resource Definitions (CRDs) and save it to `~/resources.yaml`
+2. Use kubectl's default output format to list CRDs (do not set an output format)
+3. Using kubectl, extract the documentation for the subject specification field of the Certificate Custom Resource and save it to `~/subject.yaml`
+
+**Important**: You may use any output format that kubectl supports for the documentation extraction.
+
+---
+
+### **Question 13: WordPress Resource Allocation** (Workloads & Scheduling)
+
+A WordPress application with 3 replicas in the `relative-fawn` namespace consists of:
+- **CPU**: 1 core
+- **Memory**: 2015360ki
+
+**Tasks**:
+- Divide node resources evenly across all 3 pods
+- Give each Pod a fair share of CPU and memory
+- Add enough overhead to keep the node stable
+- Use the exact same requests for both containers and init containers
+- You are not required to change any resource limits
+
+**Helpful Tip**: It may help to temporarily scale the WordPress Deployment to 0 replicas while updating the resource requests.
+
+**Verification**:
+- WordPress keeps 3 replicas
+- All Pods are running and ready
+
+### **Question 13: Upated Question** (Workloads & Scheduling)
+
+A WordPress application with 3 replicas in the `relative-fawn` namespace consists of:
+
+Limit resources in the pods: 
+- **CPU**: 900m
+- **Memory**: 1100Mi
+
+**Tasks**:
+- Divide node resources evenly across all 3 pods
+- Give each Pod a fair share of CPU and memory
+- Add enough overhead to keep the node stable
+- Use the exact same requests for both containers and init containers
+- You are not required to change any resource limits
+
+**Helpful Tip**: It may help to temporarily scale the WordPress Deployment to 0 replicas while updating the resource requests.
+
+**Verification**:
+- WordPress keeps 3 replicas
+- All Pods are running and ready
+
+---
+
+### **Question 14: MariaDB Data Recovery** (Storage & Troubleshooting)
 A user accidentally deleted the MariaDB Deployment in the `mariadb` namespace, which was configured with persistent storage.
 
 **Responsibility**: Re-establish the Deployment while ensuring data is preserved by reusing the available PersistentVolume.
@@ -270,7 +251,25 @@ A user accidentally deleted the MariaDB Deployment in the `mariadb` namespace, w
 
 ---
 
-#### **Question 16: Cluster Component Recovery**
+### **Question 15: Linux System Preparation for Kubernetes** (Installation & Configuration)
+Prepare a Linux system for Kubernetes. Docker is already installed, but you need to configure it for kubeadm.
+
+**Tasks**:
+
+**Set up cri-dockerd**:
+- Install the Debian package: `~/cri-dockerd_0.3.9.3-0.ubuntu-jammy_amd64.deb`
+- Debian packages are installed using `dpkg`
+- Enable and start the cri-docker service
+
+**Configure system parameters**:
+- Set `net.bridge.bridge-nf-call-iptables` to `1`
+- Set `net.ipv6.conf.all.forwarding` to `1`
+- Set `net.ipv4.ip_forward` to `1`
+- Set `net.netfilter.nf_conntrack_max` to `131072`
+
+---
+
+### **Question 16: Cluster Component Recovery** (Troubleshooting)
 Fix a single-node cluster that got broken during machine migration.
 
 **Background**: The decommissioned cluster used an external etcd server.
@@ -280,6 +279,19 @@ Fix a single-node cluster that got broken during machine migration.
 2. Fix the configuration of all broken cluster components
 3. Restart all necessary services and components for changes to take effect
 4. Ensure the cluster, single node, and all pods are Ready
+
+---
+
+### **Question 17: Network Policy Implementation** (Services & Networking)
+You have frontend and backend Deployments in separate namespaces (`frontend` and `backend`). They need to communicate.
+
+**Tasks**:
+1. **Analyze**: Inspect the frontend and backend Deployments to understand their communication requirements
+2. **Apply**: From the NetworkPolicy YAML files in the `~/netpol` folder, choose one to apply. It must:
+   - Allow communication between frontend and backend
+   - Be as restrictive as possible (least permissive)
+
+**Important**: Do not delete or change the existing "deny-all" network policies. Failure to follow these rules may result in a score reduction or zero.
 
 ---
 

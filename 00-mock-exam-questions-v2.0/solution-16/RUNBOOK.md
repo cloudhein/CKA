@@ -44,4 +44,14 @@ sudo systemctl restart kubelet
 
 sudo systemctl status kubelet
 ```
+### **If you got the error of tls certicates even after updates kube-apiserver static pod, regenerate the API Server Certificate**
 
+### **WARNINGS** 
+- I have yet tested in the exam for this solution, please do further research and prepare in your own lab in case you got tls certicates errors 
+
+```bash
+
+rm /etc/kubernetes/pki/apiserver.crt /etc/kubernetes/pki/apiserver.key
+
+kubeadm init phase certs apiserver
+```
